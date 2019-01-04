@@ -7,7 +7,6 @@ class ShelfChanger extends Component {
     }
 
     updateShelf = (value) => {
-        // this.props.selected = value;
         this.props.shelfChanged(value);
     }
 

@@ -6,7 +6,8 @@ import { search, getAll, update } from './BooksAPI'
 class Search extends Component {
     state = {
         books: [],
-        myBooks: []
+        myBooks: [],
+        query: ''
     }
 
     async componentWillMount() {
@@ -18,23 +19,42 @@ class Search extends Component {
     }
 
     async search(query) {
+        this.setState({
+            query: query
+        })
+
         if (query.length < 3) {
             return;
         }
 
         const books = await search(query);
 
-        const booksFiltered = books.map(book => {
-            book.shelf = 'none';
+        let booksFiltered = [];
 
-            this.state.myBooks.forEach(b => {
-                if (book.id === b.id) {
-                    book.shelf = b.shelf;
+        if (books && books.length > 0) {
+            booksFiltered = books.map(book => {
+                book.shelf = 'none';
+
+                if (!book.imageLinks) {
+                    book.imageLinks = {
+                        smallThumbnail: '',
+                        thumbnail: ''
+                    }
                 }
-            });
 
-            return book;
-        });
+                if (!book.authors) {
+                    book.authors = [''];
+                }
+    
+                this.state.myBooks.forEach(b => {
+                    if (book.id === b.id) {
+                        book.shelf = b.shelf;
+                    }
+                });
+    
+                return book;
+            });
+        }
 
         console.log('booksFiltered', booksFiltered);
 
@@ -60,7 +80,7 @@ class Search extends Component {
                 </div>
                 <div className="search-books-results">
                     <ol className="books-grid">
-                        {this.state.books.length > 0 && this.state.books.map((book, index) => (
+                        {this.state.query && this.state.books.length > 0 && this.state.books.map((book, index) => (
                             <Book key={index} image={book.imageLinks.smallThumbnail} title={book.title} authors={book.authors} shelf={book.shelf} shelfChanged={(shelf) => this.updateShelf(book, shelf)} />
                         ))}
                     </ol>

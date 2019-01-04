@@ -3,22 +3,25 @@ import React from 'react'
 import './App.css'
 import Home from './Home'
 import Search from './Search'
+import NotFound from './NotFound';
 import {
     BrowserRouter as Router,
-    Route // for later
+    Route,
+    Switch
 } from 'react-router-dom';
 
-class BooksApp extends React.Component {
-    render() {
-        return (
-            <Router>
-                <div style={{ margin: '0 auto' }}>
+const BooksApp = () => {
+    return (
+        <Router>
+            <div style={{ margin: '0 auto' }}>
+                <Switch>
                     <Route exact path='/' component={Home} />
                     <Route path='/search' component={Search} />
-                </div>
-            </Router>
-        );
-    }
+                    <Route component={NotFound} />
+                </Switch>
+            </div>
+        </Router>
+    );
 }
 
 export default BooksApp;

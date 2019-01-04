@@ -10,17 +10,13 @@ class Book extends Component {
         shelf: PropTypes.string.isRequired
     };
 
-    updateShelf(shelf) {
-        this.props.shelfChanged(shelf);
-    }
-
     render() {
         return (
             <li>
                 <div className="book">
                     <div className="book-top">
                         <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${this.props.image})` }}></div>
-                        <ShelfChanger selected={this.props.shelf} shelfChanged={(shelf) => this.updateShelf(shelf)} />
+                        <ShelfChanger selected={this.props.shelf} shelfChanged={this.props.shelfChanged} />
                     </div>
                     <div className="book-title">{this.props.title}</div>
                     {this.props.authors.map((author, index) => (
